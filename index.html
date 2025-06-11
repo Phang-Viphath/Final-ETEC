@@ -36,8 +36,7 @@
             </div>
             
             <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-full md:w-1/2 mx-auto mt-2 md:mt-0">
-                <input id="search-input" type="text" placeholder="Search product name"
-                    class="px-4 py-2 text-black outline-none w-full">
+                <input id="search-input" type="text" placeholder="Search product name" class="px-4 py-2 text-black outline-none w-full">
                 <button id="search-button" class="bg-yellow-500 px-5 py-2 text-white">SEARCH</button>
             </div>
         
@@ -89,16 +88,45 @@
                     <h2 class="text-xl font-semibold mb-4 text-green-600">Cancelled Successfully!</h2>
                     <button id="close-success-modal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">OK</button>
                 </div>
-            </div>            
+            </div>         
+
+            <div id="payment-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 px-5">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full text-center">
+                    <div class="mx-auto mb-4 w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-zoom-in">
+                        <svg class="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-4 text-green-600 dark:text-green-400">Payment Completed Successfully!</h2>
+                    <button id="close-payment-success-modal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">OK</button>
+                </div>
+            </div>
+
+            <div id="add-to-cart-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 px-5">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full text-center">
+                    <div class="mx-auto mb-4 w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-zoom-in">
+                        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-4 text-green-600 dark:text-green-400">Added to Cart Successfully!</h2>
+                    <button id="close-add-to-cart-success" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">OK</button>
+                </div>
+            </div>
 
             <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden px-5">
-                <div class="bg-white p-6 rounded-lg max-w-sm w-full text-center">
-                    <h2 class="text-lg text-gray-600 font-semibold mb-4">Scan to Pay</h2>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-sm w-full text-center">
+                    <h2 class="text-lg text-gray-600 dark:text-gray-200 font-semibold mb-4">Scan to Pay</h2>
                     <img src="QRcode.jpg" alt="Bank QR Code" class="w-48 h-48 mx-auto mb-4">
-                    <p class="text-gray-600 mb-4">Please scan the QR code to complete your payment.</p>
-                    <button id="close-modal-QR" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
-                        Close
-                    </button>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Please scan the QR code to complete your payment.</p>
+                    <div class="flex justify-center space-x-4">
+                        <button id="close-modal-QR" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                            Close
+                        </button>
+                        <button id="done-payment" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+                            Done
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -111,7 +139,7 @@
                     <div id="view-product" class="text-center">
                         <!-- code -->
                     </div>
-                    <button id="view-add-to-cart" class="mt-4 w-full px-4 py-2 bg-yellow-500 text-white rounded-md hover:scale-105 transition-all duration-300">
+                    <button id="view-add-to-cart" class=" mt-4 w-full px-4 py-2 bg-yellow-500 text-white rounded-md hover:scale-105 transition-all duration-300">
                         <i class="bi bi-cart-plus me-2"></i> Add to Cart
                     </button>                      
                 </div>
@@ -269,12 +297,13 @@
             <a href="https://t.me/PHANG_VIPHATH"><i class="bi bi-chat-left-text me-2"></i>Chat</a>
         </button>
         <div class="max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-4">
-            <div class="w-full lg:w-1/4 bg-white shadow-lg rounded-lg p-4">
+            <div class="w-full lg:w-1/4 bg-white shadow-lg rounded-lg p-4 hidden lg:block">
                 <h2 class=" px-4 py-2 bg-yellow-500 text-white rounded-md hover:scale-105 transition-all duration-300">FEATURE PRODUCT LINE</h2>
                 <ul id="data-line" class="mt-4 space-y-4">
                     <!-- code -->
                 </ul>
             </div>
+            
             <div class="w-full lg:w-3/4">
                 <div>
                     <h2 class="text-lg font-semibold bg-yellow-500 text-white px-4 py-2 inline-block hover:scale-105 transition-all duration-300">FROM THE BLOG</h2>
@@ -327,17 +356,17 @@
                         </form>
                     </div>
                 </div>
-                <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 px-5">
-                    <div class="bg-white rounded-lg p-6 max-w-sm w-full text-center">
+                <div id="create-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 px-5">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full text-center">
                         <div class="mx-auto mb-4 w-20 h-20 rounded-full bg-green-100 flex items-center justify-center animate-zoom-in">
-                            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <svg class="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h2 class="text-xl font-semibold mb-4 text-green-600">Cart Created Successfully!</h2>
-                        <button id="close-success-modal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">OK</button>
+                        <h2 class="text-xl font-semibold mb-4 text-green-600 dark:text-green-400">Cart Created Successfully!</h2>
+                        <button id="close-create-success" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">OK</button>
                     </div>
-                </div>                                          
+                </div>                                     
                 <div class="bg-white p-4 shadow rounded-lg mt-6">
                     <div class="flex items-center justify-between">
                         <button class="text-gray-600 text-2xl">❮</button>
