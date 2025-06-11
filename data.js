@@ -324,27 +324,69 @@ document.getElementById('close-success-modal').addEventListener('click', functio
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const checkoutBtn = document.getElementById('checkout-button');
-    const paymentModal = document.getElementById('payment-modal');
-    const closePaymentModal = document.getElementById('close-modal-QR');
-    const closeCartModal = document.getElementById('close-cart-modal');
-    const cartModal = document.getElementById('cart-modal');
+    function handleCheckoutModal() {
+        const checkoutBtn = document.getElementById('checkout-button');
+        const paymentModal = document.getElementById('payment-modal');
+        const closePaymentModal = document.getElementById('close-modal-QR');
+        const donePaymentBtn = document.getElementById('done-payment');
+        const cartModal = document.getElementById('cart-modal');
+        const paymentSuccessModal = document.getElementById('payment-success-modal');
+        const closePaymentSuccessModal = document.getElementById('close-payment-success-modal');
 
-    if (checkoutBtn && paymentModal && closePaymentModal) {
-        checkoutBtn.addEventListener('click', () => {
-            paymentModal.classList.remove('hidden');
-        });
+        if (checkoutBtn && paymentModal && closePaymentModal && donePaymentBtn && cartModal && paymentSuccessModal && closePaymentSuccessModal) {
+            checkoutBtn.addEventListener('click', () => {
+                cartModal.classList.add('hidden');
+                paymentModal.classList.remove('hidden');
+            });
 
-        closePaymentModal.addEventListener('click', () => {
-            paymentModal.classList.add('hidden');
-        });
+            closePaymentModal.addEventListener('click', () => {
+                paymentModal.classList.add('hidden');
+            });
+
+            donePaymentBtn.addEventListener('click', () => {
+                paymentModal.classList.add('hidden');
+                cartItems = [];
+                renderCartItems();
+                paymentSuccessModal.classList.remove('hidden');
+            });
+
+            paymentModal.addEventListener('click', (e) => {
+                if (e.target === paymentModal) {
+                    paymentModal.classList.add('hidden');
+                }
+            });
+
+            closePaymentSuccessModal.addEventListener('click', () => {
+                paymentSuccessModal.classList.add('hidden');
+            });
+
+            paymentSuccessModal.addEventListener('click', (e) => {
+                if (e.target === paymentSuccessModal) {
+                    paymentSuccessModal.classList.add('hidden');
+                }
+            });
+        }
     }
 
-    if (closeCartModal && cartModal) {
-        closeCartModal.addEventListener('click', () => {
-            cartModal.classList.add('hidden');
-        });
+    function handleCartModal() {
+        const closeCartModal = document.getElementById('close-cart-modal');
+        const cartModal = document.getElementById('cart-modal');
+
+        if (closeCartModal && cartModal) {
+            closeCartModal.addEventListener('click', () => {
+                cartModal.classList.add('hidden');
+            });
+
+            cartModal.addEventListener('click', (e) => {
+                if (e.target === cartModal) {
+                    cartModal.classList.add('hidden');
+                }
+            });
+        }
     }
+
+    handleCheckoutModal();
+    handleCartModal();
 });
 
 function addToCart(product) {
@@ -395,8 +437,8 @@ function Category_Computer() {
                                 <button class="p-1 px-2 bg-blue-100 rounded-md hover:bg-blue-500 hover:text-white view-product" data-product='${JSON.stringify(product)}'>
                                     <i class="bi bi-eye text-blue-600"></i>
                                 </button>
-                                <button class="p-1 px-2 bg-red-100 rounded-md hover:bg-red-500 hover:text-white toggle-like" data-product-id="${product.id}">
-                                    <i class="bi ${likedProducts[product.id] ? 'bi-heart-fill text-red-600' : 'bi-heart text-red-600'}"></i>
+                                <button class="p-1 px-2 bg-red-100 rounded-md hover:bg-red-500 hover:text-white toggle-like" data-product-id="${product.id || product.name}">
+                                    <i class="bi ${likedProducts[product.id || product.name] ? 'bi-heart-fill text-red-600' : 'bi-heart text-red-600'}"></i>
                                 </button>
                             </div>
                         </div>
@@ -432,6 +474,30 @@ function Category_Computer() {
         `;
     }).join('');
 
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', () => {
+            const product = JSON.parse(button.getAttribute('data-product'));
+            addToCart(product);
+            const addToCartSuccessModal = document.getElementById('add-to-cart-success-modal');
+            if (addToCartSuccessModal) {
+                addToCartSuccessModal.classList.remove('hidden');
+            }
+        });
+    });
+
+    const closeAddToCartSuccess = document.getElementById('close-add-to-cart-success');
+    const addToCartSuccessModal = document.getElementById('add-to-cart-success-modal');
+    if (closeAddToCartSuccess && addToCartSuccessModal) {
+        closeAddToCartSuccess.addEventListener('click', () => {
+            addToCartSuccessModal.classList.add('hidden');
+        });
+        addToCartSuccessModal.addEventListener('click', (e) => {
+            if (e.target === addToCartSuccessModal) {
+                addToCartSuccessModal.classList.add('hidden');
+            }
+        });
+    }
+
     document.querySelectorAll('.toggle-like').forEach(button => {
         button.addEventListener('click', () => {
             const productId = button.getAttribute('data-product-id');
@@ -457,9 +523,7 @@ function Category_Computer() {
             const category = button.getAttribute('data-category');
             const allItems = Products_Computer.find(c => c.category === category)?.products || [];
             const newItems = newCarts.filter(c => c.category === category);
-
             const content = [...allItems, ...newItems];
-
             const viewAllContent = document.getElementById('view-all-content');
             viewAllContent.innerHTML = content.map(product => `
                 <div class="bg-white p-3 shadow-lg rounded-lg text-center">
@@ -469,20 +533,12 @@ function Category_Computer() {
                     <p class="text-green-600 font-semibold">$ ${product.price}</p>
                 </div>
             `).join('');
-
             document.getElementById('view-all-modal').classList.remove('hidden');
         });
     });
 
     document.getElementById('close-view-all').addEventListener('click', () => {
         document.getElementById('view-all-modal').classList.add('hidden');
-    });
-
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', () => {
-            const product = JSON.parse(button.getAttribute('data-product'));
-            addToCart(product);
-        });
     });
 
     document.querySelectorAll('.view-product').forEach(button => {
@@ -541,13 +597,12 @@ function Category_Computer() {
             document.getElementById('new-cart-modal').classList.add('hidden');
             category_computer.innerHTML = '';
             Category_Computer();
-            document.getElementById('success-modal').classList.remove('hidden');
+            document.getElementById('create-success-modal').classList.remove('hidden');
+            document.getElementById('close-create-success').addEventListener('click', () => {
+                document.getElementById('create-success-modal').classList.add('hidden');
+            });
         });
     }
-
-    document.getElementById('close-success-modal').addEventListener('click', function () {
-        document.getElementById('success-modal').classList.add('hidden');
-    });
 
     const closeNewCartModal = document.getElementById('close-new-cart-modal');
     if (closeNewCartModal) {
@@ -630,6 +685,10 @@ document.addEventListener('DOMContentLoaded', () => {
         viewAddToCart.addEventListener('click', () => {
             if (currentProduct) {
                 addToCart(currentProduct);
+                const addToCartSuccessModal = document.getElementById('add-to-cart-success-modal');
+                if (addToCartSuccessModal) {
+                    addToCartSuccessModal.classList.remove('hidden');
+                }
                 viewModal.classList.add('hidden');
                 currentProduct = null;
             }
@@ -643,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = document.getElementById('close-modal');
 
     if (searchButton && searchInput && modal && modalContent && closeModal) {
-        searchButton.addEventListener('click', () => {
+        const performSearch = () => {
             const term = searchInput.value.trim().toLowerCase();
             let found = null;
 
@@ -665,6 +724,15 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.value = '';
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+        };
+
+        searchButton.addEventListener('click', performSearch);
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
         });
 
         closeModal.addEventListener('click', () => {
